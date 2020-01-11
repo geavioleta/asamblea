@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <script src="https://aristaticfiles.s3.amazonaws.com/ecbundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/sha256.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<script>
+		if (window.location.protocol != "https:"){
+			window.location.protocol = "https";
+		}
+	</script>
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <style type="text/css">
+
+		body{
+			font-family: 'Roboto Mono', monospace;
+		    height: 100%;
+		}
+
+		h1 {
+		    font-size: 1.2em;
+		}
+
+		h2 {
+		    font-size: 0.8em;
+		}
+
+		.pull-right{text-align: center;}
+		.pull-left{float: left;}
+		.clear-fix{clear:both;}
+		div.logo{text-align: center;
+		         margin: 20px 20px 20px 20px;
+		         font-size: 26px;
+		         color: black !important;
+		         font-weight: bold;
+		         font-family: 'Roboto Mono', monospace;
+		         padding: 10px;
+		         color: white;
+		}
+
+		#formWrapper{
+		    width:100%;
+		    height:100%;
+		    position: absolute;
+		    top:0;
+		    left:0;
+		    background-color:#fff;
+		}
+
+		div#form{
+			font-family: 'Roboto Mono', monospace;
+			position: relative;
+		    vertical-align: center;
+		    width:100%;
+		    height:auto;
+		}
+
+		div.form-item{
+		    position: relative; display: block; margin-bottom: 20px;
+		    font-family: 'Roboto Mono', monospace;
+		}
+		div.text-item{
+		    position: relative; display: block;
+		    font-family: 'Roboto Mono', monospace;
+		    margin-left: 25%;
+		    font-size: 0.8em;
+		}
+		.right-text {
+			padding-left:5px;
+		}
+
+		div.form-item a {
+		}
+
+		a {
+			text-decoration: none;
+		    font-family: 'Roboto Mono', monospace;
+		    font-size: 1em;
+		    padding: 3px 0 0 0;
+		}
+
+		div.form-item a.login {
+		    width: 300px;
+		    height: 60px;
+		    border-radius: 10px;
+		    background-color: black;
+		    border:1px solid black;
+		    color: white;
+		    font-family: 'Roboto Mono', monospace;
+		    font-size: 105%;
+		    text-align: center;
+		    vertical-align: center;
+		    letter-spacing: .5px;
+		    padding: 5px 5%;
+		}
+		.entry{
+			color: black !important;
+		}
+		div.form-item a.enc-button {
+		    width: 300px;
+		    height: 60px;
+		    -moz-border-radius: 10px;
+		    -webkit-border-radius: 10px;
+		    border-radius: 10px;
+		    -moz-background-clip: padding;
+		    -webkit-background-clip: padding-box;
+		    background-clip: padding-box;
+		    background-color: black;
+		    border:1px solid black;
+		    color: white;
+		    font-family: 'Roboto Mono', monospace;
+		    font-size: 105%;
+		    text-align: center;
+		    vertical-align: center;
+		    letter-spacing: .5px;
+		    padding: 5px 5%;
+		    border:1px solid black;
+		    outline: none;
+		}
+
+		div.form-item a.entry:hover{background-color: #fff; border:1px solid black; color:black; cursor:pointer;}
+		div.form-item a.entry:focus{outline: none;}
+		div.form-item a.enc-button:hover{color: black; cursor:pointer;}
+		div.form-item a.enc-button:focus{outline: none;}
+		div.form-item a.login:hover{background-color: #fff; border:1px solid black; color:black; cursor:pointer;}
+		div.form-item a.login:focus{outline: none;}
+
+		div.form-item .form-style {
+		    width: 200px;
+		    height: 25px;
+		    -moz-border-radius: 10px;
+		    -webkit-border-radius: 10px;
+		    border-radius: 10px;
+		    background-color: white;
+		    border:1px #ccc solid;
+		    font-family: 'Roboto Mono', monospace;
+		    font-size: 1.35em;
+		    text-align: center;
+		    vertical-align: center;
+		    padding: 1px;
+		}
+		div.form-item .form-style:focus{
+		    outline: none; border:1px solid black; color:black;
+		}
+		div.form-item .form-style2 {
+		    width: 300px;
+		    height: 150px;
+		    -moz-border-radius: 10px;
+		    -webkit-border-radius: 10px;
+		    border-radius: 10px;
+		    background-color: white;
+		    border:1px #ccc solid;
+		    font-family: 'Roboto Mono', monospace;
+		    font-size: 1em;
+		    text-align: center;
+		    vertical-align: center;
+		    padding: 1px;
+		}
+		div.form-item .form-style2:focus{
+		    outline: none; border:1px solid black; color:black;
+		}
+		div.square {
+		    width: 180px;
+		    height: 180px;
+		    -moz-border-radius: 10px;
+		    -webkit-border-radius: 10px;
+		    border-radius: 10px;
+		    background-color: #ccc;
+		    border:1px solid black;
+		    font-family: 'Roboto Mono', monospace;
+		    text-align: center;
+		    padding: 2px;
+		}
+
+		.sm  { font-size: 20px; }
+		.btn { text-align: center; }
+		.ctr { text-align: center; font-size: 0.8em; }
+
+		#create {
+		    font-size: 15px;
+		    width: 245px;
+		}
+    </style>
+  </head>
+
+  <body>
+  	{% csrf_token %}
+	<div id="formWrapper">
+	  <div id="form">
+	    <h1 style="font-family: 'Roboto Mono', monospace; text-align: center; font-size: 26px;">asamblea</h1>
+	    <p style="font-family: 'Roboto Mono', monospace; text-align: center;">clandestine social network</p>
+	    <br>
+		<div id="entrance">
+			<br>
+		    <div class="form-item btn">
+		      <a id='signup' class="login entry">&nbsp;&nbsp;join&nbsp;&nbsp;</a>
+		    </div>
+		    <div class="form-item btn">
+		      <a id='login' class="login entry">&nbsp;log in&nbsp;</a>
+		    </div>
+		</div>
+
+	    <div id="choose-signup">
+    		<div class="form-item ctr">
+			  	invite public key:<br> 
+			  	<input type="text" id="signup-pub" size='24' class="form-style" autocomplete="off"><br><br>
+			  	invite code:<br> 
+			  	<input type="password" id="signup-code" size='24' class="form-style" autocomplete="off"><br><br>
+			  	passphrase:<br>
+			  	<input type="password" id="signup-pass" size='24' class="form-style" autocomplete="off"><br><br>
+			  	confirm passphrase:<br>
+			  	<input type="password" id="signup-pass-2" size='24' class="form-style" autocomplete="off"><br><br>
+			</div>
+	    	<div class="form-item ctr">
+	    		to join you must be invited<br>
+	    		if you have been invited<br>
+	    		choose a strong passphrase and<br>
+	    		make sure you do not forget it<br><br>
+	    		<span style="color:red;" id="signup-error"></span>
+	    	</div>
+			  <div class="form-item btn">
+			  	<a class="login entry" id="signup-submit">&nbsp;&nbsp;join&nbsp;&nbsp;</a>
+			  </div>
+			  <div class="form-item btn">
+			  	<a class="enc-button" id="signup-back">&nbsp;&nbsp;back&nbsp;&nbsp;</a>
+			  </div>
+		</div>
+	    <div id="post-signup">
+	    	<div class="form-item ctr">
+	    		<h1 style="font-family: 'Roboto Mono', monospace; text-align: center; font-size: 26px;">you're in!</h1>
+    			this is your public key. copy and save it.<br>
+		    	<h1 id="pubkey-receipt" style="font-family: 'Roboto Mono', monospace;"></h1>
+		    	ASAMBLEA is an anti-surveillance site designed for total privacy.<br>
+		    	our servers never have unencrypted access<br>
+		    	to ANY of your personal data or correspondences (not even a username).<br>
+		    	neither do any other site members, until you explicitly authorize them.<br><br>
+		    	to log into your own account and decrypt it<br>
+		    	you need both your public key and your passphrase.<br>
+	    	</div>
+	    	<br>
+			<div class="form-item btn">
+			  	<a class="enc-button" id="signup-continue">enter</a>
+			</div>
+		</div>
+		<div id="choose-login">
+    		<div class="form-item ctr">
+			  	public key:<br> 
+			  	<input type="text" id="login-pub" size='24' class="form-style" autocomplete="off"><br><br>
+			  	passphrase:<br>
+			  	<input type="password" id="login-pass" size='24' class="form-style" autocomplete="off"><br><br>
+			  	<span style="color:red;" id="login-error"></span>
+			</div>
+			  <div class="form-item btn">
+			  	<a class="login entry" id="login-submit">&nbsp;log in&nbsp;</a>
+			  </div>
+			  <div class="form-item btn">
+			  	<a class="enc-button" id="login-back">&nbsp;&nbsp;back&nbsp;&nbsp;</a>
+			  </div>
+		</div>
+
+		<div id="profile-page">
+			<div class="form-item ctr">
+				<div class="form-item btn">
+				 <a class="login" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>&nbsp;&nbsp;
+				 <a class="login" id="profile-to-posts">&nbsp;&nbsp;posts&nbsp;&nbsp;</a>&nbsp;&nbsp;
+				 <a class="login" id="profile-to-intersect">contacts</a>&nbsp;&nbsp;
+				 <a class="login" id="profile-to-invite">&nbsp;invite&nbsp;</a>
+				</div>
+				<br>
+				<hr>
+				OUTER PROFILE
+				<table align="center" width="75%">
+				  <tr style="text-align: left;">
+				    <td>
+				    	Photo:<br>
+				    	<div id="profile-img-box", class="square">
+				    		<img id="prof-img" width="100%">
+				    	</div>
+				    </td>
+				    <td>
+				    	public key:&nbsp;<span id="profile-pubkey"></span><br>
+				    	alias:&nbsp;<span id="profile-alias"></span><br>
+				    	intersections:&nbsp;<span id="profile-intersection-num"></span><br>
+				    	tags:&nbsp;<span id="profile-tags"></span><br>
+				    	intro:&nbsp;<span id="profile-intro"></span>
+				    </td>
+				  </tr>
+				</table>
+			</div>
+			<hr>
+			<div class="form-item ctr">
+				INNER PROFILE
+				<table align="center" width="40%">
+				  <tr style="text-align: left;">
+				  	<td>
+				    	name:&nbsp;<span id="profile-name"></span><br>
+				    	email:&nbsp;<span id="profile-email"></span><br>
+				    	location:&nbsp;<span id="profile-location"></span><br>
+				    	about:&nbsp;<span id="profile-about"></span><br>
+				    	annoncements:&nbsp;<span id="profile-announce"></span><br>
+					</td>
+				  </tr>
+				</table>
+			</div>
+			<hr>
+			<br>
+			<div class="form-item btn">
+			 <a class="login" id="profile-edit">&nbsp;edit profile&nbsp;</a>
+			</div>
+		</div>
+		<div id="profile-page-editable">
+			<div class="form-item ctr">
+				<div class="form-item btn">
+				 <a class="login" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>&nbsp;&nbsp;
+				 <a class="login" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>&nbsp;&nbsp;
+				 <a class="login" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>&nbsp;&nbsp;
+				 <a class="login" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+				</div>
+				<br>
+				<hr>
+				OUTER PROFILE
+				<table align="center" width="75%">
+				  <tr style="text-align: left;">
+				    <td>
+				    	Photo:<br>
+				    	<div class="square">
+				    		<input type="file" onchange="getFile(this)"> 
+				    	</div>
+				    </td>
+				    <td>
+				    	public key:&nbsp;<span id="profile-pubkey-edit"></span><br>
+				    	alias:<input type="text", size='24' class="form-style" id="profile-alias-edit"><br>
+				    	intersections:<span id="profile-intersection-num-edit"></span><br>
+				    	tags:<input type="text", size='24' class="form-style" id="profile-tags-edit"></span><br>
+				    	intro:<input type="text", size='48' class="form-style" id="profile-intro-edit"></span>
+				    </td>
+				  </tr>
+				</table>
+			</div>
+			<hr>
+			<div class="form-item ctr">
+				INNER PROFILE
+				<table align="center" width="40%">
+				  <tr style="text-align: left;">
+				  	<td>
+				    	name:<input type="text", size='24' class="form-style" id="profile-name-edit"></span><br>
+				    	email:<input type="text", size='24' class="form-style" id="profile-email-edit"></span><br>
+				    	location:<input type="text", size='24' class="form-style" id="profile-location-edit"></span><br>
+				    	about:<br><textarea class="form-style2" id="profile-about-edit"></textarea><br>
+				    	announcements:<br><textarea class="form-style2" id="profile-announce-edit"></textarea>
+				    </td>
+				  </tr>
+				</table>
+			</div>
+			<div class="form-item btn">
+			 <a class="login" id="profile-update">&nbsp;update&nbsp;</a>&nbsp;&nbsp;<a class="login" id="profile-update-cancel">&nbsp;cancel&nbsp;</a>
+			</div>
+		</div>
+		<div id="intersections-page">
+			<div class="form-item btn">
+			 <a class="login" id="intersect-to-profile">&nbsp;profile&nbsp;</a>&nbsp;&nbsp;
+			 <a class="login" id="intersect-to-posts">&nbsp;&nbsp;posts&nbsp;&nbsp;</a>&nbsp;&nbsp;
+			 <a class="login">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>&nbsp;&nbsp;
+			 <a class="login" id="intersect-to-invite">&nbsp;invite&nbsp;</a>
+			</div>
+			<div class="form-item ctr">
+				<br>
+				<hr>
+				REQUESTS:
+				<div id="intersect-requests"></div>
+				<br>
+				<hr>
+				INTERSECTIONS:
+				<div id="intersection-list"></div>
+			</div>
+		</div>
+		<div id="posts-page">
+			<div class="form-item btn">
+			 <a class="login" id="posts-to-profile">&nbsp;profile&nbsp;</a>&nbsp;&nbsp;
+			 <a class="login">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>&nbsp;&nbsp;
+			 <a class="login" id="posts-to-intersect">contacts</a>&nbsp;&nbsp;
+			 <a class="login" id="posts-to-invite">&nbsp;invite&nbsp;</a>
+			</div>
+			<br>
+			<hr>
+			<br>
+			<div class="form-item ctr">
+				posts go here.
+			</div>
+		</div>
+		<div id="chats-page">
+			<div class="form-item btn">
+			 <a class="login" id="chats-to-profile">&nbsp;profile&nbsp;</a>&nbsp;&nbsp;
+			 <a class="login" id="chats-to-posts">&nbsp;&nbsp;posts&nbsp;&nbsp;</a>&nbsp;&nbsp;
+			 <a class="login" id="chats-to-intersect">contacts</a>&nbsp;&nbsp;
+			 <a class="login">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+			</div>
+			<br>
+			<hr>
+			<br>
+			<div class="form-item ctr">
+				Every ASAMBLEA member is given 10 unique invites to use however they choose<br>
+				Please be mindful of who you invite (i.e. NO fascists, NO police)<br>
+			</div>
+			<div class="form-item btn">
+			 <a class="login" id="get-invitation">NEXT INVITE</a>
+			</div>
+			<br>
+			<div class="form-item ctr">
+				<h1 id="next-invite"></h1>
+			</div>
+			<br>
+			<div style="text-decoration: underline;" id="see-unredeemed" class="form-item ctr">
+				view unredeemed invitations
+			</div>
+		</div>
+	  </div>
+	</div>
+  </body>
+
+  <script>
+	var ecies = ECIES;
+	var Buf = BUFFER.Buffer;
+	var tencoder = new TextEncoder('utf8');
+	var tdecoder = new TextDecoder('utf8');
+	var sessionMasterPriv = '';
+	var sessionInnerPriv = '';
+	var sessionOuterPriv = '';
+	var profileData = {'outerProfile': {}, 'innerProfile': {}};
+	var intersectRequests = [];
+	window.onload = function() {
+		$("#choose-signup").hide();
+		$("#choose-login").hide();
+		$("#post-signup").hide();
+		$("#profile-page").hide();
+		$("#profile-page-editable").hide();
+		$("#intersections-page").hide();
+		$("#posts-page").hide();
+		$("#chats-page").hide();
+		var csrftoken = getCookie('csrftoken');
+		$.ajaxSetup({
+		    beforeSend: function(xhr, settings) {
+		        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+		            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+		        }
+		    }
+		});
+	}
+
+	$("#signup-submit").click(function(){
+		var invitedBy = $('#signup-pub').val();
+		var code = $('#signup-code').val();
+		if ($('#signup-pass').val() != $('#signup-pass-2').val()) {
+			document.getElementById('signup-error').innerHTML = 'passwords dont match.';
+			return
+		}
+		if (($('#signup-pass').val().length) < 8) {
+			document.getElementById('signup-error').innerHTML = 'password too short.';
+			return
+		}
+		var admin = "no";
+		if (code=="admin") {
+			admin = "yes";
+			code = randstring(16);
+		}
+		var masterPriv = sha256($('#signup-pass').val()+code);
+		var masterPub = derivePubHex(masterPriv);
+		var random1 = randstring(20);
+		var random2 = randstring(20);
+		var outerPriv = sha256(code+$('#signup-pass').val()+random1);
+		var outerPub = derivePubHex(outerPriv);
+		var innerPriv = sha256(code+$('#signup-pass').val()+random2+code);
+		var innerPub = derivePubHex(innerPriv);
+		var outerKeyCipher = encrypt(masterPub, outerPriv);
+		var innerKeyCipher = encrypt(masterPub, innerPriv);
+		var check = decrypt(masterPriv, outerKeyCipher);
+		if (check != outerPriv) {
+			console.log('encryption error');
+			return
+		}
+		$.ajax({
+		  type: "POST",
+		  url: "{% url 'init_signup' %}",
+		  data: {'outerProfileDK': outerKeyCipher, 'outerProfileEK': outerPub, 'innerProfileDK': innerKeyCipher, 'innerProfileEK': innerPub, 'pubkey': masterPub, 'code': code, 'admin': admin, 'invitedBy': invitedBy},
+		  success: function (data) {
+		  	if (data.status=="ok") {
+		  		document.getElementById('pubkey-receipt').innerHTML = masterPub;
+			  	sessionMasterPriv = masterPriv;
+			  	sessionInnerPriv = innerPriv;
+			  	sessionOuterPriv = outerPriv;
+			  	profileData['outerProfile'] = {'alias':'', 'publicKey': masterPub, 'tags': '', 'intro':'', 'imgData':''};
+			  	profileData['innerProfile'] = {'name':'', 'email':'', 'location':'', 'about': '', 'announcements':'', 'posts':{}};
+			  	profileData['outerProfile']['intersections'] = '0';
+			  	profileData['innerProfile']['intersections'] = {};
+			  	if (admin == "no") {
+			  		outerInviteCipher = encrypt(invitedBy, outerPriv);
+					$.ajax({
+					  type: "POST",
+					  url: "{% url 'store_intersection' %}",
+					  data: {'pubkey': masterPub, 'contactPK': invitedBy, 'profileKey': outerInviteCipher, 'profileType': 'outer', 'isRequest':'yes'},
+					  success: function (data) {
+			  			profileData['innerProfile']['intersections'] = {};
+			  			profileData['innerProfile']['intersections'][invitedBy] = {'permission': 'outer', 'outerKey': 'await'}
+			  			profileData['outerProfile']['intersections'] = '1';
+			  			var innerUpdate = encrypt(innerPub, profileData['innerProfile']);
+						$.ajax({
+						  type: "POST",
+						  url: "{% url 'store_profile' %}",
+						  data: {'pubkey': derivePubHex(sessionMasterPriv), 'profile': innerUpdate, 'profileType': 'inner'},
+						  success: function (data) {
+						  	if (data.status=="ok") {
+								populateProfile();
+								$("#choose-signup").hide();
+								$("#post-signup").show();
+							}
+						  }
+						});
+			  		  }
+			  		});
+			  	} else {
+					populateProfile();
+					$("#choose-signup").hide();
+					$("#post-signup").show();		  		
+			  	}
+		  	}
+		  },
+		  error: function (XMLHttpRequest, textStatus, errorThrown) {
+		    document.getElementById('signup-error').innerHTML = 'invalid invitation.';
+		  }
+		});
+	})
+
+	$("#login-submit").click(function(){
+		$.ajax({
+		  type: "POST",
+		  url: "{% url 'init_login' %}",
+		  data: {'pubkey': $("#login-pub").val()},
+		  success: function (data) {
+		  	try {
+			  	var masterPriv = sha256($('#login-pass').val()+data.code);
+				var innerPriv = decrypt(masterPriv, data.innerProfileDK);
+				var outerPriv = decrypt(masterPriv, data.outerProfileDK);	  		
+			  	sessionMasterPriv = masterPriv;
+			  	sessionInnerPriv = innerPriv;
+			  	sessionOuterPriv = outerPriv;
+		  	}
+		  	catch(err) {
+		  		document.getElementById('login-error').innerHTML = 'error logging in.';
+		  	}
+			$.ajax({
+			  type: "POST",
+			  url: "{% url 'get_full_profile' %}",
+			  data: {'pubkey': $("#login-pub").val()},
+			  success: function (data) {
+			  	try {
+				  	var innerProfileString = decrypt(sessionInnerPriv, data.innerProfile);
+				  	var outerProfileString = decrypt(sessionOuterPriv, data.outerProfile);
+				  	profileData['innerProfile'] = JSON.parse(innerProfileString);
+				  	profileData['outerProfile'] = JSON.parse(outerProfileString);
+					$.ajax({
+					  type: "POST",
+					  url: "{% url 'get_intersect_requests' %}",
+					  data: {'pubkey': $("#login-pub").val()},
+					  success: function (data) {
+					  	try {
+						  	var outerPubs = data.outerPubs;
+						  	var outerProfs = data.outerProfs;
+						  	var innerPubs = data.innerPubs;
+						  	var innerProfs = data.innerProfs;
+						  	console.log(outerPubs, outerProfs, innerPubs, innerProfs);
+						  	for (i=0; i<outerPubs.length; i++) {
+						  		var found = false;
+						  		for (j=0; j<innerPubs.length; j++) {
+						  			if (innerPubs[j]==outerPubs[i]) {
+						  				intersectRequests.push({'pubkey': outerPubs[i], 'permission': 'inner', 'outerKey': outerProfs[i], 'innerKey': innerProfs[j]});
+						  				found = true;
+						  				break
+						  			}
+						  		}
+					  			if (!found) {
+					  				intersectRequests.push({'pubkey': outerPubs[i], 'permission': 'outer', 'outerKey': outerProfs[i]})
+					  			}
+						  	}
+						  	populateProfile();
+						  	$('#choose-login').hide();
+						  	$('#profile-page').show();
+					  	}
+					  	catch(err) {
+						  	populateProfile();
+						  	$('#choose-login').hide();
+						  	$('#profile-page').show();
+					  	}
+					  },
+					  error: function (XMLHttpRequest, textStatus, errorThrown) {
+					  	populateProfile();
+					  	$('#choose-login').hide();
+					  	$('#profile-page').show();
+					  }
+					});
+				}
+				catch(err) {
+					document.getElementById('login-error').innerHTML = 'error logging in.';
+				}
+			  },
+			  error: function (XMLHttpRequest, textStatus, errorThrown) {
+			    document.getElementById('login-error').innerHTML = 'error logging in.';
+			  }
+			});
+		  },
+		  error: function (XMLHttpRequest, textStatus, errorThrown) {
+		    document.getElementById('login-error').innerHTML = 'error logging in.';
+		  }
+		});
+	})
+
+	$("#profile-update").click(function(){
+		var j=0;
+		for ([key, value] of Object.entries(profileData['innerProfile']['intersections'])) {
+			j++;
+		}
+		var currentOuter = JSON.parse(JSON.stringify({'publicKey': profileData['outerProfile']['publicKey'], 'alias': $("#profile-alias-edit").val(), 'intro':$("#profile-intro-edit").val(), 'tags': $("#profile-tags-edit").val(), 'intersections': j, 'imgData': profileData['outerProfile']['imgData']}));
+		var currentInner = JSON.parse(JSON.stringify({'name': $("#profile-name-edit").val(), 'email': $("#profile-email-edit").val(), 'location':$("#profile-location-edit").val(), 'about': $("#profile-about-edit").val(), 'announcements':$("#profile-announce-edit").val(), 'intersections': profileData['innerProfile']['intersections'], 'posts': profileData['innerProfile']['posts']}));
+		var outerUpdate = encrypt(derivePubHex(sessionOuterPriv), JSON.stringify(currentOuter));
+		$.ajax({
+		  type: "POST",
+		  url: "{% url 'store_profile' %}",
+		  data: {'pubkey': derivePubHex(sessionMasterPriv), 'profile': outerUpdate, 'profileType': 'outer'},
+		  success: function (data) {
+		  	if (data.status=="ok") {
+		  		profileData['outerProfile'] = currentOuter;
+				var innerUpdate = encrypt(derivePubHex(sessionInnerPriv), JSON.stringify(currentInner));
+				$.ajax({
+				  type: "POST",
+				  url: "{% url 'store_profile' %}",
+				  data: {'pubkey': derivePubHex(sessionMasterPriv), 'profile': innerUpdate, 'profileType': 'inner'},
+				  success: function (data) {
+				  	if (data.status=="ok") {
+				  		profileData['innerProfile'] = currentInner;
+						populateProfile();
+						$("#profile-page-editable").hide();
+						$("#profile-page").show();
+				  	}
+				  }
+				});
+		  	}
+		  }
+		});
+	})
+
+	$("#get-invitation").click(function(){
+		$.ajax({
+		  type: "POST",
+		  url: "{% url 'next_invite' %}",
+		  data: {'pubkey': derivePubHex(sessionMasterPriv)},
+		  success: function (data) {
+		  	document.getElementById('next-invite').innerHTML = data.invite;
+		  }
+	    });
+	})
+
+	function getFile(input) {
+	  let file = input.files[0];
+	  var reader = new FileReader();
+	  reader.readAsDataURL(file);
+	  reader.onload = function () {
+	     profileData['outerProfile']['imgData'] = reader.result;
+	  };
+	}
+
+	function populateProfile() {
+		document.getElementById('profile-pubkey').innerHTML = profileData['outerProfile']['publicKey'];
+		document.getElementById('profile-pubkey-edit').innerHTML = profileData['outerProfile']['publicKey'];
+		document.getElementById('profile-alias').innerHTML = profileData['outerProfile']['alias'];
+		document.getElementById('profile-alias-edit').value = profileData['outerProfile']['alias'];
+		document.getElementById('profile-tags').innerHTML = profileData['outerProfile']['tags'];
+		document.getElementById('profile-tags-edit').value = profileData['outerProfile']['tags'];
+		document.getElementById('profile-intro').innerHTML = profileData['outerProfile']['intro'];
+		document.getElementById('profile-intro-edit').value = profileData['outerProfile']['intro'];
+		document.getElementById('profile-intersection-num').innerHTML = profileData['outerProfile']['intersections'];
+		document.getElementById('profile-intersection-num-edit').innerHTML = profileData['outerProfile']['intersections'];
+		if (profileData['outerProfile']['imgData'] != '') {
+			document.getElementById("prof-img").src = profileData['outerProfile']['imgData'];
+		}
+		document.getElementById('profile-name').innerHTML = profileData['innerProfile']['name'];
+		document.getElementById('profile-name-edit').value = profileData['innerProfile']['name'];
+		document.getElementById('profile-email').innerHTML = profileData['innerProfile']['email'];
+		document.getElementById('profile-email-edit').value = profileData['innerProfile']['email'];
+		document.getElementById('profile-location').innerHTML = profileData['innerProfile']['location'];
+		document.getElementById('profile-location-edit').value = profileData['innerProfile']['location'];
+		document.getElementById('profile-about').innerHTML = profileData['innerProfile']['about'];
+		document.getElementById('profile-about-edit').value = profileData['innerProfile']['about'];
+		document.getElementById('profile-announce').innerHTML = profileData['innerProfile']['announcements'];
+		document.getElementById('profile-announce-edit').value = profileData['innerProfile']['announcements'];
+		try {
+			document.getElementById("intersect-requests").innerHTML = '';
+			for (i=0; i<intersectRequests.length; i++) {
+				var req = intersectRequests[i];
+				if (req != 'pass') {
+					var outerKey = decrypt(sessionMasterPriv, req['outerKey']);
+					var pk = req['pubkey'];
+					var permission = '';
+					var reqOuterProfile = {};
+					if (req['permission']=='inner') {
+						permission = 'Inner Profile';
+					} else if (req['permission']=='outer') {
+						permission = 'Outer Profile';
+					}
+					$.ajax({
+					  type: "POST",
+					  url: "{% url 'get_full_profile' %}",
+					  data: {'pubkey': pk},
+				      async : false,
+					  success: function (data) {
+					  	reqOuterProfile = JSON.parse(decrypt(outerKey, data.outerProfile));
+						document.getElementById("intersect-requests").innerHTML += '<table align="center" width="75%"><tr style="text-align: left;"><td>Photo:<br><div id="profile-img", class="square"><img src="'+reqOuterProfile['imgData']+'" style="width: 100%;""></div></td><td>public key:&nbsp;'+pk+'<br>alias:&nbsp;'+reqOuterProfile['alias']+'<br>intersections:&nbsp;'+reqOuterProfile['intersections']+'<br>request level:&nbsp;'+permission+'<br>tags:&nbsp;'+reqOuterProfile['tags']+'<br>intro:&nbsp;'+reqOuterProfile['intro']+'</td></tr></table><br><div class="form-item btn"><a class="login" id="accept-req-'+pk+'">accept</a>&nbsp;&nbsp;<a class="login" id="reject-req-'+pk+'">reject</a></div><br>';
+						document.getElementById('accept-req-'+pk).addEventListener("click", acceptRequest);
+					  }
+				    });
+				}
+			}		
+		}
+		catch(err) {
+			console.log(err);
+		}
+		for ([key, value] of Object.entries(profileData['innerProfile']['intersections'])) {
+			var pk = key;
+			if (value['outerKey'] == 'await') {
+				$.ajax({
+				  type: "POST",
+				  url: "{% url 'get_intersection' %}",
+				  data: {'pubkey': derivePubHex(sessionMasterPriv), 'getkey':pk},
+				  async : false,
+				  success: function (data) {
+				  	value['outerKey'] = data.outerProfileKey;
+				  }
+				});
+			}
+		}
+		document.getElementById('intersection-list').innerHTML = '';
+		console.log(profileData['innerProfile']['intersections']);
+		for ([key, value] of Object.entries(profileData['innerProfile']['intersections'])) {
+			var pk = key;
+			if (value['outerKey'] == 'await') {
+				document.getElementById('intersection-list').innerHTML += '<table align="center" width="60%"><tr style="text-align: left;"><td>public key:&nbsp;'+pk+'<br>awaiting permission (cannot yet decrypt a profile)...</td></tr></table>';			
+			} else {
+				var outerKey = decrypt(sessionMasterPriv, value['outerKey']);
+				var outerProfile = {};
+				$.ajax({
+				  type: "POST",
+				  url: "{% url 'get_full_profile' %}",
+				  data: {'pubkey': pk},
+				  async : false,
+				  success: function (data) {
+				  	outerProfile = JSON.parse(decrypt(outerKey, data.outerProfile));
+					document.getElementById('intersection-list').innerHTML += '<table align="center" width="75%"><tr style="text-align: left;"><td>Photo:<br><div id="profile-img", class="square"><img src="'+outerProfile['imgData']+'" style="width: 100%;""></div></td><td>public key:&nbsp;'+pk+'<br>alias:&nbsp;'+outerProfile['alias']+'<br>intersections:&nbsp;'+outerProfile['intersections']+'<br>permission:&nbsp;'+value['permission']+'<br>tags:&nbsp;'+outerProfile['tags']+'<br>intro:&nbsp;'+outerProfile['intro']+'</td></tr></table><br><table align="center" width=40% id="inner-prof-'+pk+'"></table><br><div class="form-item btn"><a class="login" id="see-more-'+pk+'">see more</a></div><br>';
+					document.getElementById('see-more-'+pk).addEventListener("click", seeMore);
+				  }
+			    });
+			}
+		}
+	}
+
+	function acceptRequest(e) {
+		var pk = e.target.id.slice(11, e.target.id.length);
+		var toAccept = {};
+		var idx = -1;
+		for (i=0; i<intersectRequests.length; i++){
+			if (intersectRequests[i]['pubkey'] == pk) {
+				toAccept = intersectRequests[i];
+				idx = i;
+				break
+			}
+		}
+		var innerKey = '';
+		var outerKey = toAccept['outerKey'];
+		profileData['innerProfile']['intersections'][pk] = {'permission': toAccept['permission'], 'outerKey': toAccept['outerKey']}
+		var outerCipher = encrypt(toAccept['pubkey'], sessionOuterPriv);
+		$.ajax({
+		  type: "POST",
+		  url: "{% url 'store_intersection' %}",
+		  data: {'pubkey': derivePubHex(sessionMasterPriv), 'contactPK': toAccept['pubkey'], 'profileKey': outerCipher, 'profileType': 'outer', 'isRequest':'no'},
+		  success: function (data) {}
+		});
+		if (toAccept['permission'] == 'inner') {
+			innerKey = toAccept['innerKey'];
+			profileData['innerProfile']['intersections'][pk]['innerKey'] = toAccept['innerKey'];
+			var innerCipher = encrypt(toAccept['pubkey'], sessionInnerPriv);
+			$.ajax({
+			  type: "POST",
+			  url: "{% url 'store_intersection' %}",
+			  data: {'pubkey': derivePubHex(sessionMasterPriv), 'contactPK': toAccept['pubkey'], 'profileKey': innerCipher, 'profileType': 'inner', 'isRequest':'no'},
+			  success: function (data) {}
+			});
+		}
+		$.ajax({
+		  type: "POST",
+		  url: "{% url 'clear_intersect_request' %}",
+		  data: {'pubkey': derivePubHex(sessionMasterPriv), 'toClear': pk},
+		  success: function(data) {}
+		}).then(function(){
+			var innerUpdate = encrypt(derivePubHex(sessionInnerPriv), JSON.stringify(profileData['innerProfile']));
+			$.ajax({
+			  type: "POST",
+			  url: "{% url 'store_profile' %}",
+			  data: {'pubkey': derivePubHex(sessionMasterPriv), 'profile': innerUpdate, 'profileType': 'inner'},
+			  success: function (data) {}
+			}).then(function() {
+			  intersectRequests[idx] = 'pass';
+		      populateProfile();
+			});
+		});
+	}
+
+	function seeMore(e) {
+		var pk = e.target.id.slice(9, e.target.id.length);
+		if (profileData['innerProfile']['intersections'][pk]['permission'] == 'inner') {
+			var innerKey = decrypt(sessionMasterPriv, profileData['innerProfile']['intersections'][pk]['innerKey']);
+			$.ajax({
+			  type: "POST",
+			  url: "{% url 'get_full_profile' %}",
+			  data: {'pubkey': pk},
+			  success: function(data) {
+			  	var innerProfile = JSON.parse(decrypt(innerKey, data.innerProfile));
+			  }
+			}).then(function(){
+				document.getElementById('inner-prof-'+pk).innerHTML = '<tr style="text-align: left;"><td>name:&nbsp;'+innerProfile['name']+'<br>email:&nbsp;'+innerProfile['email']+'<br>location:&nbsp;'+innerProfile['location']+'<br>about:&nbsp;'+innerProfile['about']+'<br>annoncements:&nbsp;'+innerProfile['announcements']+'<br></td></tr>';
+			});
+		} else {
+			document.getElementById('inner-prof-'+pk).innerHTML = '<tr style="text-align: left;"><td><br>no access to inner profile (you must request permission)<br></td></tr>';
+		}
+	}
+
+	$("#login").click(function(){
+		$("#entrance").hide();
+		$("#choose-login").show();
+	})
+
+	$("#signup").click(function(){
+		$("#entrance").hide();
+		$("#choose-signup").show();
+	})
+
+	$("#signup-back").click(function(){
+		$("#choose-signup").hide();
+		$("#entrance").show();
+	})
+
+	$("#login-back").click(function(){
+		$("#choose-login").hide();
+		$("#entrance").show();
+	})
+
+	$("#signup-continue").click(function(){
+		$("#post-signup").hide();
+		$("#profile-page").show();
+	})
+
+	$("#profile-edit").click(function(){
+		$("#profile-page").hide();
+		$("#profile-page-editable").show();
+	})
+
+	$("#profile-update-cancel").click(function(){
+		$("#profile-page-editable").hide();
+		$("#profile-page").show();
+	})
+
+	$("#profile-to-posts").click(function(){
+		$("#profile-page").hide();
+		$("#posts-page").show();
+	})
+
+	$("#profile-to-invite").click(function(){
+		$("#profile-page").hide();
+		$("#chats-page").show();
+	})
+
+	$("#profile-to-intersect").click(function(){
+		$("#profile-page").hide();
+		$("#intersections-page").show();
+	})
+
+	$("#intersect-to-profile").click(function(){
+		$("#intersections-page").hide();
+		$("#profile-page").show();
+	})
+
+	$("#intersect-to-posts").click(function(){
+		$("#intersections-page").hide();
+		$("#posts-page").show();
+	})
+
+	$("#intersect-to-invite").click(function(){
+		$("#intersections-page").hide();
+		$("#chats-page").show();
+	})
+
+	$("#posts-to-profile").click(function(){
+		$("#posts-page").hide();
+		$("#profile-page").show();
+	})
+
+	$("#posts-to-invite").click(function(){
+		$("#posts-page").hide();
+		$("#chats-page").show();
+	})
+
+	$("#posts-to-intersect").click(function(){
+		$("#posts-page").hide();
+		$("#intersections-page").show();
+	})
+
+	$("#chats-to-intersect").click(function(){
+		$("#chats-page").hide();
+		$("#intersections-page").show();
+	})
+
+	$("#chats-to-profile").click(function(){
+		$("#chats-page").hide();
+		$("#profile-page").show();
+	})
+
+	$("#chats-to-posts").click(function(){
+		$("#chats-page").hide();
+		$("#posts-page").show();
+	})
+
+	function decrypt(hexKey, b64cipher) {
+		var cipher = Buf.from(b64decode(b64cipher));
+		var dec = ecies.decrypt(hexKey, cipher);
+		return tdecoder.decode(dec);
+	}
+
+	function encrypt(hexPub, data) {
+		return b64encode(ecies.encrypt(hexPub, data));
+	}
+
+	function derivePubHex(hexKey) {
+		var sk = ecies.PrivateKey.fromHex(hexKey);
+		return sk.publicKey.toHex(true);
+	}
+
+	function sha256(str) {
+		return CryptoJS.SHA256(str).toString(CryptoJS.enc.Hex);
+	}
+
+	function b64encode(arr) {
+		var binary = "";
+	    var len = arr.byteLength;
+	    for (var i = 0; i < len; i++) {
+	        binary += String.fromCharCode( arr[ i ] );
+	    }
+	    return window.btoa( binary );
+	}
+
+	function b64decode(arr) {
+	    var binary_string = window.atob(arr);
+	    var len = binary_string.length;
+	    var bytes = new Uint8Array(len);
+	    for (var i = 0; i < len; i++) {
+	        bytes[i] = binary_string.charCodeAt(i);
+	    }
+	    return bytes;
+	}
+
+	function randstring(length) {
+	   var result           = '';
+	   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	   var charactersLength = characters.length;
+	   for ( var i = 0; i < length; i++ ) {
+	      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+	   }
+	   return result;
+	}
+
+	function getCookie(name) {
+	    var cookieValue = null;
+	    if (document.cookie && document.cookie !== '') {
+	        var cookies = document.cookie.split(';');
+	        for (var i = 0; i < cookies.length; i++) {
+	            var cookie = jQuery.trim(cookies[i]);
+	            // Does this cookie string begin with the name we want?
+	            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+	                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+	                break;
+	            }
+	        }
+	    }
+	    return cookieValue;
+	}
+
+	function csrfSafeMethod(method) {
+	    // these HTTP methods do not require CSRF protection
+	    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+	}
+
+  </script>
+</html>
